@@ -106,10 +106,20 @@ html, body {
 	will-change: transform;
 }
 
+.content {
+	margin: 0 20px;
+	display: block;
+	width: 100%;
+	max-width: 600px;
+	background-color: rgba(0,0,0,0.7);
+	animation: pulse 10s ease infinite;
+	box-shadow: rgba(0,0,0,0.7) 4px 4px 4px;
+}
+
 .content-inline {
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: baseline;
 	color: rgba(220, 220, 220, 0.6);
 }
 
@@ -123,19 +133,8 @@ html, body {
 }
 
 .content-inline .content-number {
-	font-size: 22px;
+	font-size: 24px;
 	padding: 0 5px;
-}
-
-
-.content {
-	margin: 0 20px;
-	display: block;
-	width: 100%;
-	max-width: 600px;
-	background-color: rgba(0,0,0,0.7);
-	animation: pulse 10s ease infinite;
-	box-shadow: rgba(0,0,0,0.7) 4px 4px 4px;
 }
 
 .content-stripe {
@@ -204,7 +203,7 @@ html, body {
 
 @keyframes pulse {
 	0% {background-color: rgba(0,0,0,0.7);}
-	50% {background-color: rgba(0,0,0,0.4);}
+	50% {background-color: rgba(0,0,0,0.5);}
 	100% {background-color: rgba(0,0,0,0.7);}
 }
 
