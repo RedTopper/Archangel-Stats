@@ -5,9 +5,9 @@ let notifEnabled;
 let notifMin;
 let sentNotification = false;
 
-function statisticError(xhr, status, type) {
+function statisticError(status, type, target) {
 	let $error = $("#js-request-error");
-	let $number = $("#js-number-playing");
+	let $number = $(target);
 	let $title = $("title");
 
 	switch(status) {
@@ -33,7 +33,7 @@ function statisticSuccessMatchmaking(json) {
 
 	$information.empty();
 	if (!("total" in json) || !("averageWaitTime" in json) || !("lastStatisticsTime" in json)) {
-		statisticError(null, "parsererror", "Response did not contain key 'total', 'averageWaitTime', or 'lastStatisticsTime'!");
+		statisticError(null, "parsererror", "Malformed statistics data!");
 		return;
 	}
 
@@ -73,26 +73,28 @@ function statisticSuccessMatchmaking(json) {
 		sentNotification = false;
 	}
 
-	let date = new Date(json.lastStatisticsTime);
 	let time =  "Wait Time: ~" + Math.ceil(json.averageWaitTime/1000) + " s";
 
 	$information.append($("<span></span>").text(time));
 	$number.text(json.total);
-	$("#js-request-error").hide();
-	$("#js-last-updated-time").text("Last Updated: " + date.toLocaleDateString() + " / " +date.toLocaleTimeString());
 	$("title").text("(" + json.total + ") Archangel VR: Matchmaking");
-
-	//make loading symbol stick around for a little bit so the
-	//user knows the app is actually doing something
-	setTimeout(function () {
-		$(".loading-outer").hide();
-	}, 200);
+	statisticsComplete(new Date(json.lastStatisticsTime));
 }
 
 function statisticSuccessPlayers(json) {
+	if (!("total" in json) || !("lastStatisticsTime" in json)) {
+		statisticError(null, "parsererror", "Malformed player data!");
+		return;
+	}
+
 	$("#js-number-online").text(json.total);
+	statisticsComplete(new Date(json.lastStatisticsTime));
+}
+
+function statisticsComplete(date) {
 	$("#js-request-error").hide();
 	$("#js-last-updated-time").text("Last Updated: " + date.toLocaleDateString() + " / " +date.toLocaleTimeString());
+
 	//make loading symbol stick around for a little bit so the
 	//user knows the app is actually doing something
 	setTimeout(function () {
@@ -208,21 +210,27 @@ function setup() {
 
 function update() {
 	$(".loading-outer").show();
+
 	$.ajax({
 		"url": "https://aa.sdawsapi.com/matchmaking/stats",
 		"dataType": "json",
 		"crossDomain": true,
 		"timeout": 2000,
 		"success": statisticSuccessMatchmaking,
-		"error": statisticError
-	})
+		"error": function(xhr, status, type) {
+			statisticError(status, type, "#js-number-playing");
+		}
+	});
+
 	$.ajax({
 		"url": "https://aa.sdawsapi.com/players/stats",
 		"dataType": "json",
 		"crossDomain": true,
 		"timeout": 2000,
 		"success": statisticSuccessPlayers,
-		"error": statisticError
+		"error": function(xhr, status, type) {
+			statisticError(status, type, "#js-number-online");
+		}
 	})
 }
 

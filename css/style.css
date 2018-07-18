@@ -106,6 +106,28 @@ html, body {
 	will-change: transform;
 }
 
+.content-inline {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: rgba(220, 220, 220, 0.6);
+}
+
+.content-inline > * {
+	display: inline-block;
+}
+
+.content-inline .content-title {
+	font-size: 28px;
+	padding: 0 5px;
+}
+
+.content-inline .content-number {
+	font-size: 22px;
+	padding: 0 5px;
+}
+
+
 .content {
 	margin: 0 20px;
 	display: block;
