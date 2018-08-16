@@ -29,6 +29,10 @@
 	<button id='js-notification-toggle'>Enable Notifications</button><br>
 	<label for="js-notification-minimum" title="Don't send a notification unless this many players are searching">Minimum Players:</label>
 	<input  id="js-notification-minimum" type="number"  value="1" min="1" step="1"><br>
+	<label for="js-api-call" title="Enable the extra API call to get the game mode of searching players. If you would like to reduce the load on Skydance's Servers, disable this.">Enable Extra API Call:</label>
+	<input  id="js-api-call" type="checkbox" checked="checked"><br>
+	<label for="js-optimism" title="In order to cheer up PeskyCashew, enable this mode for wacky stats. Not saved across refreshes.">Wacky Stats:</label>
+	<input  id="js-optimism" type="checkbox"><br>
 </div>
 <div id="js-settings-toggle" class="gear">
 	<img class="gear-image" src="img/gear.svg" alt="Settings" title="Configure Options">
@@ -64,8 +68,19 @@
 	</div>
 	<div class="information">
 		<div id="js-statistics-content" class="information-content" style="display: none">
-			<!-- JS -->
-			Loading...
+			<div id="js-product-statistics">
+				<!-- JS -->
+			</div>
+			<div id="js-region-statistics">
+				<!-- JS -->
+			</div>
+			<div id="js-mode-statistics">
+				<!-- JS -->
+			</div>
+			<div id="js-time-statistics">
+				<!-- JS -->
+				Loading...
+			</div>
 		</div>
 		<div id="js-statistics-toggle" class="information-tab">
 			Statistics
