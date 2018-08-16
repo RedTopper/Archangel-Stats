@@ -115,7 +115,7 @@ function statisticGameModes(json) {
 
 	let parsed = {};
 	json.forEach(function(player) {
-		if ("version" in player && "uid" in player && "gameVersion" in player) {
+		if ("status" in player && "uid" in player) {
 			//Looks close enough to a player
 			if ("searchParameters" in player && "maximumTeamSize" in player) {
 				//We have some specific search parameters.
