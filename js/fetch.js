@@ -10,6 +10,7 @@ const UPDATE_PERIOD_MS = 10000;
 const UPDATE_DELAY_MS = 500;
 
 //Game modes
+const MODE_ANY = "Anything";
 const MODE_COOP = "CO-OP";
 const MODE_TDM = "TDM";
 const MODE_TDM_1V1 = "TDM (1v1)";
@@ -114,37 +115,44 @@ function statisticGameModes(json) {
 
 	let parsed = {};
 	json.forEach(function(player) {
-		if ("searchParameters" in player && "maximumTeamSize" in player) {
-			player.searchParameters.forEach(function(search) {
-				if ("parameter" in search
-					&& "name" in search.parameter
-					&& "value" in search.parameter
-					&& search.parameter.name === "GAME_MODE") {
+		if ("version" in player && "uid" in player && "gameVersion" in player) {
+			//Looks close enough to a player
+			if ("searchParameters" in player && "maximumTeamSize" in player) {
+				//We have some specific search parameters.
+				player.searchParameters.forEach(function (search) {
+					if ("parameter" in search
+						&& "name" in search.parameter
+						&& "value" in search.parameter
+						&& search.parameter.name === "GAME_MODE") {
 
-					let mode = MODE_UNKNOWN;
-					if (MODES.hasOwnProperty(search.parameter.value)) {
-						mode = MODES[search.parameter.value];
-					}
+						let mode = MODE_UNKNOWN;
+						if (MODES.hasOwnProperty(search.parameter.value)) {
+							mode = MODES[search.parameter.value];
+						}
 
-					switch (mode) {
-						case MODE_TDM:
-							if (player.maximumTeamSize == 2) {
-								addOrSet(parsed, MODE_TDM_2V2, 1);
-							} else if (player.maximumTeamSize == 1) {
-								addOrSet(parsed, MODE_TDM_1V1, 1);
-							} else {
-								addOrSet(parsed, MODE_TDM, 1);
-							}
-							break;
-						case MODE_COOP:
-							addOrSet(parsed, MODE_COOP, 1);
-							break;
-						case MODE_UNKNOWN:
-						default:
-							addOrSet(parsed, MODE_UNKNOWN, 1);
+						switch (mode) {
+							case MODE_TDM:
+								if (player.maximumTeamSize == 2) {
+									addOrSet(parsed, MODE_TDM_2V2, 1);
+								} else if (player.maximumTeamSize == 1) {
+									addOrSet(parsed, MODE_TDM_1V1, 1);
+								} else {
+									addOrSet(parsed, MODE_TDM, 1);
+								}
+								break;
+							case MODE_COOP:
+								addOrSet(parsed, MODE_COOP, 1);
+								break;
+							case MODE_UNKNOWN:
+							default:
+								addOrSet(parsed, MODE_UNKNOWN, 1);
+						}
 					}
-				}
-			});
+				});
+			} else {
+				//We don't care what we get dropped into.
+				addOrSet(parsed, MODE_ANY, 1);
+			}
 		}
 	});
 
