@@ -7,4 +7,4 @@ this app makes is to Skydance Interactive's servers for current matchmaking stat
 is collected when using this site.
 
 ## Website
-You can view the live site here: https://redinquisitive.github.io/Archangel-Stats/
+You can view the live site here: https://redtopper.github.io/Archangel-Stats/
